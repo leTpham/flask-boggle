@@ -57,8 +57,8 @@ class BoggleAppTestCase(TestCase):
 
             # write a test for this route
 
-def test_api_score_word(self):
-        """Test starting a new game."""
+    def test_api_score_word(self):
+        """Test different cases for scoring word"""
 
         with self.client as client:
             ...
@@ -69,12 +69,37 @@ def test_api_score_word(self):
         # api/score-word
         # get response which will be a result
         # if the result is ok, then run score_word instance method on the game
+        
             game_resp = client.post("/api/new-game")
             game_info = game_resp.get_json()
-            game_id, board = game_info
+            game_id= game_info["gameId"]
+            games[game_id].board =[
+                        ["O","O","O","O","O"],
+                        ["O","C","A","T","O"],
+                        ["O","O","O","O","O"],
+                        ["O","O","O","O","O"],
+                        ["O","O","O","O","O"]
+                                    ]
 
             score_resp = client.post('/api/score-word',
-                                json={'game_id': game_info['game_id'],
-                                      'word': 'blue'})
-            if score_resp["result"] == "ok":
+                                json={'game_id': game_id,
+                                      'word': 'HAEUK'})
+            json_response = score_resp.get_json()
 
+            self.assertEqual({'result': 'not-word'}, json_response)
+
+
+            score_resp = client.post('/api/score-word',
+                                json={'game_id': game_id,
+                                      'word': 'SEW'})
+            json_response = score_resp.get_json()
+
+            self.assertEqual({'result': 'not-on-board'}, json_response)
+
+
+            score_resp = client.post('/api/score-word',
+                                json={'game_id': game_id,
+                                      'word': 'CAT'})
+            json_response = score_resp.get_json()
+
+            self.assertEqual({'result': 'ok'}, json_response)

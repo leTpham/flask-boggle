@@ -38,12 +38,10 @@ def new_game():
 @app.post("/api/score-word")
 def score_word(): # post parameters do not get passed into the view function
     # the only parameters you pass are get query strings
-    """Checks if word is legal and scores word if legal
-    """
+    """Checks if word is legal"""
 
     game_info = request.json
     game_id, word = game_info.values()
-    breakpoint()
     game = games[game_id]
     if not game.is_word_in_word_list(word):
         result = "not-word"
