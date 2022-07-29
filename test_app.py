@@ -9,6 +9,7 @@ app.config['TESTING'] = True
 app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 
 
+
 class BoggleAppTestCase(TestCase):
     """Test flask app of Boggle."""
 
@@ -35,4 +36,21 @@ class BoggleAppTestCase(TestCase):
 
         with self.client as client:
             ...
+            response = client.post("/api/new-game")
+            json_response = response.get_json()
+            # breakpoint()
+            # x=response
+
+            self.assertEqual(response.status_code, 200)
+            # check if game id is in games dictionary
+
+            self.assertIsInstance((json_response["gameId"]), str)
+
+            # check if board is a list
+            self.assertIsInstance((json_response["board"]), list)
+
+            #check if game id is in the dictionary
+            self.assertIn(json_response["gameId"], games)
+
             # write a test for this route
+
