@@ -49,8 +49,32 @@ class BoggleAppTestCase(TestCase):
             # check if board is a list
             self.assertIsInstance((json_response["board"]), list)
 
+            # check if board is list of lists
+            self.assertIsInstance((json_response["board"][0]), list)
+
             #check if game id is in the dictionary
             self.assertIn(json_response["gameId"], games)
 
             # write a test for this route
+
+def test_api_score_word(self):
+        """Test starting a new game."""
+
+        with self.client as client:
+            ...
+        # first, need to run a new game by sending post request to api/new-game
+        # this generates a new game_id and board
+        # extract the json response from the new game
+        # take game_id and use as parameter for new post request to
+        # api/score-word
+        # get response which will be a result
+        # if the result is ok, then run score_word instance method on the game
+            game_resp = client.post("/api/new-game")
+            game_info = game_resp.get_json()
+            game_id, board = game_info
+
+            score_resp = client.post('/api/score-word',
+                                json={'game_id': game_info['game_id'],
+                                      'word': 'blue'})
+            if score_resp["result"] == "ok":
 

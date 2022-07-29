@@ -35,3 +35,22 @@ def new_game():
 
     return jsonify({"gameId": game_id, "board": game.board})
 
+@app.post("/api/score-word")
+def score_word(): # post parameters do not get passed into the view function
+    # the only parameters you pass are get query strings
+    """Checks if word is legal and scores word if legal
+    """
+
+    game_info = request.json
+    game_id, word = game_info.values()
+    breakpoint()
+    game = games[game_id]
+    if not game.is_word_in_word_list(word):
+        result = "not-word"
+    elif not game.check_word_on_board(word):
+        result = "not-on-board"
+    else:
+        result = "ok"
+
+    return jsonify({"result": result})
+
