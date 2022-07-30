@@ -44,11 +44,10 @@ def score_word(): # post parameters do not get passed into the view function
     game_id, word = game_info.values()
     game = games[game_id]
     if not game.is_word_in_word_list(word):
-        result = "not-word"
+        return jsonify({"result": "not-word"})
     elif not game.check_word_on_board(word):
-        result = "not-on-board"
+        return jsonify({"result": "not-on-board"})
     else:
-        result = "ok"
-
-    return jsonify({"result": result})
+        score = game.play_and_score_word(word)
+        return jsonify({"result":"ok"})
 
